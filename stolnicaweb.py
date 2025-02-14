@@ -1,5 +1,4 @@
 import streamlit as st
-
 from PIL import Image
 import docx
 import os
