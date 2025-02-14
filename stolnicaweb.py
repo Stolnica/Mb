@@ -1,10 +1,11 @@
 import streamlit as st
-from streamlit_option_menu import option_menu
+
 from PIL import Image
 import docx
 import os
 from zipfile import ZipFile
 import webbrowser
+from streamlit_option_menu import option_menu
 
 # Funkcija za branje besedila iz Word dokumenta
 def preberi_docx(datoteka):
