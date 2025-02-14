@@ -34,8 +34,8 @@ def pridobi_slike(datoteka, izhodna_mapa="slike"):
     return slike_poti
 
 # Naložimo logo
-logo = Image.open(r'slomsek.png')   # Image.open(r'slomsek.png')
-
+#logo = Image.open(r'slomsek.png')   # Image.open(r'slomsek.png')
+logo = Image.open(r'./slomsek.png')
 # Pot do dokumentov
 pot_dokumentov = ""   # "c:/Users/evgen/Documents/2024/"
 datoteke = {
