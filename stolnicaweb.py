@@ -5,10 +5,7 @@ import os
 from zipfile import ZipFile
 #import webbrowser
 from streamlit_option_menu import option_menu
-import sys
 
-
-print(sys.executable)
 # Funkcija za branje besedila iz Word dokumenta
 def preberi_docx(datoteka):
     if not os.path.exists(datoteka):
