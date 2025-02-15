@@ -3,7 +3,7 @@ from PIL import Image
 import docx
 import os
 from zipfile import ZipFile
-import webbrowser
+#import webbrowser
 from streamlit_option_menu import option_menu
 
 # Funkcija za branje besedila iz Word dokumenta
