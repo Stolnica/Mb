@@ -72,6 +72,40 @@ def pdf_v_slike(pdf_pot, izhodna_mapa="slike_pdf", resolucija=3):
 
     return slike_poti
 
+# Dodajte CSS za povečavo glavne vsebine
+st.markdown("""
+<style>
+    .main-content {
+        transform-origin: top left; /* Določimo izhodišče povečave */
+        transition: transform 0.3s ease; /* Dodamo animacijo za gladko povečavo */
+    }
+    .main-content:hover { /* Opcija: Povečava ob prehodu miške čez vsebino */
+        transform: scale(1.1); /* Povečamo za 10% */
+    }
+
+    /* Zagotovite, da se vsebina ne preliva izven zaslona */
+    body {
+        overflow-x: hidden;
+    }
+
+    /* Prilagodite velikost pisave za manjše zaslone */
+    @media (max-width: 768px) {
+        .font {
+            font-size: 40px;
+        }
+        .main-content {
+            transform: scale(1); /* Onemogočite povečavo ob prehodu miške na mobilnih napravah */
+        }
+    }
+
+    /* Zagotovite, da so slike odzivne */
+    img {
+        max-width: 100%;
+        height: auto;
+    }
+</style>
+""", unsafe_allow_html=True)
+
 # Naložimo slike logo in sidebarimage
 logo = Image.open(r'./slomsek.jpg')
 sidebarimage = Image.open(r'./cerkev.jpg')
@@ -145,6 +179,8 @@ def predvajaj_zvok(pot_do_zvocne_datoteke):
 
 # Glavna vsebina
 if choose in mozni_izbori:
+    # Dodajte razred "main-content" na div, ki obdaja glavno vsebino
+    st.markdown('<div class="main-content">', unsafe_allow_html=True)
     prikazi_naslov_in_logo(choose)
 
     # Prikaz besedila in slik iz DOCX
@@ -187,3 +223,5 @@ if choose in mozni_izbori:
 
     # Predvajanje zvoka
     predvajaj_zvok(os.path.join(pot_zvoka, f"{choose}.mp3"))
+
+    st.markdown('</div>', unsafe_allow_html=True)  # Zaključimo div
