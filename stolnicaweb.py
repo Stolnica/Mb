@@ -10,12 +10,12 @@ import base64
 
 #--na vseh straneh prikazuje docx , pdf in mp3 datoteke
 # --- Določanje novih izbir ---
-izbor1 = "Oznanila"
+izbor1 = "Pesmi"
 izbor2 = "Vabila na dogodke"
 izbor3 = "Obvestila"
 izbor4 = "Sveto leto"
 izbor5 = "Obnova stolnice"
-izbor6 = "Pesmi"
+izbor6 = "Oznanila"
 
 mozni_izbori = [izbor1, izbor2, izbor3, izbor4, izbor5, izbor6]
 
@@ -77,7 +77,7 @@ pot_zvoka = ""  # Prilagodite svoji poti
 # --- Glavni meni ---
 with st.sidebar:
     choose = option_menu("Izberi:", mozni_izbori,
-                         icons=['card-text', 'calendar2-event', 'brightness-high', 'book', 'buildings', 'music-note-list'],
+                         icons=['music-note-list', 'calendar2-event', 'brightness-high', 'book', 'buildings', 'card-text'],
                          menu_icon="list", default_index=0)
 
     # Gumb za "Domov"
