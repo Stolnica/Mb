@@ -7,6 +7,7 @@ from zipfile import ZipFile
 from streamlit_option_menu import option_menu
 import fitz  # PyMuPDF za delo s PDF datotekami
 import base64
+from datetime import datetime
 
 # --- Določanje izbir ---
 izbor1 = "Oznanila"
