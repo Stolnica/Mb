@@ -1,24 +1,32 @@
 import streamlit as st
+from datetime import datetime
 from PIL import Image
 import docx
 import os
 from zipfile import ZipFile
 from streamlit_option_menu import option_menu
-import streamlit.components.v1 as components
 import fitz  # PyMuPDF za delo s PDF datotekami
 import base64
 
-#--na vseh straneh prikazuje docx , pdf in mp3 datoteke
-# --- Določanje novih izbir ---
-izbor1 = "Pesmi"
+# --- Določanje izbir ---
+izbor1 = "Oznanila"
 izbor2 = "Vabila na dogodke"
 izbor3 = "Obvestila"
 izbor4 = "Sveto leto"
 izbor5 = "Obnova stolnice"
-izbor6 = "Oznanila"
+izbor6 = "Pesmi"
 
-mozni_izbori = [izbor1, izbor2, izbor3, izbor4, izbor5, izbor6]
+# Preverimo dan in čas
+dan_v_tednu = datetime.today().weekday()
+ura = datetime.now().hour
 
+# Nastavimo vrstni red menija in ikon
+if dan_v_tednu == 6 and ura < 12:  # Nedelja dopoldan
+    mozni_izbori = [izbor6, izbor2, izbor3, izbor4, izbor5, izbor1]  # Pesmi na vrhu
+    ikone = ['music-note-list', 'calendar2-event', 'brightness-high', 'book', 'buildings', 'card-text']
+else:  # Ostali dnevi + nedelja popoldan
+    mozni_izbori = [izbor1, izbor2, izbor3, izbor4, izbor5, izbor6]  # Privzeti vrstni red
+    ikone = ['card-text', 'calendar2-event', 'brightness-high', 'book', 'buildings', 'music-note-list']
 
 # Funkcija za branje besedila iz Word dokumenta
 def preberi_docx(datoteka):
@@ -27,7 +35,6 @@ def preberi_docx(datoteka):
     doc = docx.Document(datoteka)
     odstavki = [para.text.strip() for para in doc.paragraphs if para.text.strip()]
     return "\n\n".join(odstavki)
-
 
 # Funkcija za pridobitev slik iz Word dokumenta
 def pridobi_slike(datoteka, izhodna_mapa="slike"):
@@ -44,7 +51,6 @@ def pridobi_slike(datoteka, izhodna_mapa="slike"):
                     f.write(docx_zip.read(datoteka))
                 slike_poti.append(slika_pot)
     return slike_poti
-
 
 # Funkcija za pretvorbo PDF datoteke v slike
 def pdf_v_slike(pdf_pot, izhodna_mapa="slike_pdf", resolucija=3):
@@ -65,19 +71,18 @@ def pdf_v_slike(pdf_pot, izhodna_mapa="slike_pdf", resolucija=3):
 
     return slike_poti
 
-
-# Naložimo slike logo, sidebarimage
+# Naložimo slike logo in sidebarimage
 logo = Image.open(r'./slomsek.jpg')
 sidebarimage = Image.open(r'./cerkev.jpg')
 
 # Pot do dokumentov in zvočnih datotek
-pot_dokumentov = ""  # Prilagodite svoji poti
-pot_zvoka = ""  # Prilagodite svoji poti
+pot_dokumentov = "./"
+pot_zvoka = "./"
 
 # --- Glavni meni ---
 with st.sidebar:
     choose = option_menu("Izberi:", mozni_izbori,
-                         icons=['music-note-list', 'calendar2-event', 'brightness-high', 'book', 'buildings', 'card-text'],
+                         icons=ikone,
                          menu_icon="list", default_index=0)
 
     # Gumb za "Domov"
@@ -109,16 +114,20 @@ st.markdown("""
 </head>
 """, unsafe_allow_html=True)
 
+# Meta tag za zoomanje na mobilnih napravah
+st.markdown("""
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=3, user-scalable=yes">
+</head>
+""", unsafe_allow_html=True)
 
-# Funkcija za prikaz naslova in logotipa na vsaki strani
+# Funkcija za prikaz naslova in logotipa
 def prikazi_naslov_in_logo(naslov):
     col1, col2 = st.columns([0.8, 0.2])
     with col1:
         st.markdown(f'<p class="font">{naslov}</p>', unsafe_allow_html=True)
     with col2:
         st.image(logo, width=130)
-
-
 
 # Funkcija za predvajanje zvoka
 def predvajaj_zvok(pot_do_zvocne_datoteke):
@@ -133,19 +142,17 @@ def predvajaj_zvok(pot_do_zvocne_datoteke):
                 </audio>
                 """, unsafe_allow_html=True)
 
-
-# Glavna vsebina glede na izbran meni
+# Glavna vsebina
 if choose in mozni_izbori:
     prikazi_naslov_in_logo(choose)
 
-    # Preverjanje in prikaz besedila + slik iz DOCX datoteke
+    # Prikaz besedila in slik iz DOCX
     docx_pot = os.path.join(pot_dokumentov, f"{choose}.docx")
     besedilo = preberi_docx(docx_pot)
     slike = pridobi_slike(docx_pot)
 
     if besedilo:
-        odstavki = besedilo.split("\n\n")
-        for odstavek in odstavki:
+        for odstavek in besedilo.split("\n\n"):
             st.markdown(f'<p class="bold-text">{odstavek}</p>', unsafe_allow_html=True)
 
     if slike:
@@ -154,12 +161,10 @@ if choose in mozni_izbori:
             st.image(slika_pot, width=700)
             st.markdown("<br>", unsafe_allow_html=True)
 
-    # Preverjanje in prikaz dodatnih DOCX dokumentov (Oznanila1.docx, Oznanila2.docx, ...)
+    # Preverjanje in prikaz dodatnih DOCX dokumentov
     stevilka = 1
-    while True:
+    while os.path.exists(os.path.join(pot_dokumentov, f"{choose}{stevilka}.docx")):
         dodatni_pot = os.path.join(pot_dokumentov, f"{choose}{stevilka}.docx")
-        if not os.path.exists(dodatni_pot):
-            break
         dodatno_besedilo = preberi_docx(dodatni_pot)
         dodatne_slike = pridobi_slike(dodatni_pot)
 
@@ -169,18 +174,15 @@ if choose in mozni_izbori:
                 st.markdown(f'<p class="bold-text">{odstavek}</p>', unsafe_allow_html=True)
 
         if dodatne_slike:
-            st.markdown("---")
             for slika_pot in dodatne_slike:
                 st.image(slika_pot, width=700)
-                st.markdown("<br>", unsafe_allow_html=True)
 
         stevilka += 1
 
-    # Preverjanje in prikaz PDF kot slik
+    # Prikaz PDF kot slike
     pdf_pot = os.path.join(pot_dokumentov, f"{choose}.pdf")
-    slike = pdf_v_slike(pdf_pot, resolucija=4)
-    for slika_pot in slike:
+    for slika_pot in pdf_v_slike(pdf_pot, resolucija=4):
         st.image(slika_pot, width=700)
 
-    # Preverjanje in predvajanje zvoka
+    # Predvajanje zvoka
     predvajaj_zvok(os.path.join(pot_zvoka, f"{choose}.mp3"))
