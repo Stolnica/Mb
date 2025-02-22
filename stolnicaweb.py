@@ -7,7 +7,6 @@ from zipfile import ZipFile
 from streamlit_option_menu import option_menu
 import fitz  # PyMuPDF za delo s PDF datotekami
 import base64
-from datetime import datetime
 
 # --- Določanje izbir ---
 izbor1 = "Oznanila"
@@ -152,7 +151,7 @@ st.markdown("""
 # Meta tag za zoomanje na mobilnih napravah
 st.markdown("""
 <head>
-    <meta name="viewport" content="width=800px, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes">
 </head>
 """, unsafe_allow_html=True)
 
