@@ -15,8 +15,9 @@ izbor2 = "Vabila na dogodke"
 izbor3 = "Obvestila"
 izbor4 = "Sveto leto"
 izbor5 = "Obnova stolnice"
+izbor6 = "Pesmi"
 
-mozni_izbori = [izbor1, izbor2, izbor3, izbor4, izbor5]
+mozni_izbori = [izbor1, izbor2, izbor3, izbor4, izbor5, izbor6]
 
 
 # Funkcija za branje besedila iz Word dokumenta
@@ -65,8 +66,9 @@ def pdf_v_slike(pdf_pot, izhodna_mapa="slike_pdf", resolucija=3):
     return slike_poti
 
 
-# Naložimo logo
+# Naložimo slike logo, sidebarimage
 logo = Image.open(r'./slomsek.jpg')
+sidebarimage = Image.open(r'./cerkev.jpg')
 
 # Pot do dokumentov in zvočnih datotek
 pot_dokumentov = ""  # Prilagodite svoji poti
@@ -75,7 +77,7 @@ pot_zvoka = ""  # Prilagodite svoji poti
 # --- Glavni meni ---
 with st.sidebar:
     choose = option_menu("Izberi:", mozni_izbori,
-                         icons=['card-text', 'calendar2-event', 'brightness-high', 'book', 'house'],
+                         icons=['card-text', 'calendar2-event', 'brightness-high', 'book', 'buildings', 'music-note-list'],
                          menu_icon="list", default_index=0)
 
     # Gumb za "Domov"
@@ -90,6 +92,7 @@ with st.sidebar:
         unsafe_allow_html=True
     )
     st.markdown("---")
+    st.sidebar.image(sidebarimage, width=290)
 
 # Stil za poudarjeno besedilo
 st.markdown("""
@@ -114,7 +117,7 @@ def prikazi_naslov_in_logo(naslov):
         st.markdown(f'<p class="font">{naslov}</p>', unsafe_allow_html=True)
     with col2:
         st.image(logo, width=130)
-    st.sidebar.image(logo, width=290)
+
 
 
 # Funkcija za predvajanje zvoka
