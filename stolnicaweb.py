@@ -15,6 +15,7 @@ izbor3 = "Obvestila"
 izbor4 = "Sveto leto"
 izbor5 = "Obnova stolnice"
 izbor6 = "Pesmi"
+izbor7 = "Študentske sobe"
 
 # Preverimo dan in čas
 dan_v_tednu = datetime.today().weekday()
@@ -22,11 +23,11 @@ ura = datetime.now().hour
 
 # Nastavimo vrstni red menija in ikon
 if dan_v_tednu == 6 and ura < 12:  # Nedelja dopoldan
-    mozni_izbori = [izbor6, izbor2, izbor3, izbor4, izbor5, izbor1]  # Pesmi na vrhu
-    ikone = ['music-note-list', 'calendar2-event', 'brightness-high', 'book', 'buildings', 'card-text']
+    mozni_izbori = [izbor6, izbor2, izbor3, izbor4, izbor5, izbor1, izbor7]  # Pesmi na vrhu
+    ikone = ['music-note-list', 'calendar2-event', 'brightness-high', 'book', 'buildings', 'card-text', 'house-door']
 else:  # Ostali dnevi + nedelja popoldan
-    mozni_izbori = [izbor1, izbor2, izbor3, izbor4, izbor5, izbor6]  # Privzeti vrstni red
-    ikone = ['card-text', 'calendar2-event', 'brightness-high', 'book', 'buildings', 'music-note-list']
+    mozni_izbori = [izbor1, izbor2, izbor3, izbor4, izbor5, izbor6, izbor7]  # Privzeti vrstni red
+    ikone = ['card-text', 'calendar2-event', 'brightness-high', 'book', 'buildings', 'music-note-list', 'house-door']
 
 # Funkcija za branje besedila iz Word dokumenta
 def preberi_docx(datoteka):
@@ -108,6 +109,7 @@ st.markdown("""
 # Naložimo slike logo in sidebarimage
 logo = Image.open(r'./slomsek.jpg')
 sidebarimage = Image.open(r'./cerkev.jpg')
+sidebarimage2 = Image.open(r'./cerkev2.jpg')
 
 # Pot do dokumentov in zvočnih datotek
 pot_dokumentov = "./"
@@ -115,7 +117,7 @@ pot_zvoka = "./"
 
 # --- Glavni meni ---
 with st.sidebar:
-    choose = option_menu("Izberi:", mozni_izbori,
+    choose = option_menu("Stolnica Maribor", mozni_izbori,
                          icons=ikone,
                          menu_icon="list", default_index=0)
 
@@ -132,6 +134,7 @@ with st.sidebar:
     )
     st.markdown("---")
     st.sidebar.image(sidebarimage, width=290)
+    st.sidebar.image(sidebarimage2, width=290)
 
 # Stil za poudarjeno besedilo
 st.markdown("""
