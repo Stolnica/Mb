@@ -8,14 +8,16 @@ from streamlit_option_menu import option_menu
 import fitz  # PyMuPDF za delo s PDF datotekami
 import base64
 
+# 12.3.2025 IZBOR8 SVETE MAŠE
 # --- Določanje izbir ---
 izbor1 = "Oznanila"
-izbor2 = "Vabila na dogodke"
+izbor2 = "Svete maše"
 izbor3 = "Obvestila"
 izbor4 = "Sveto leto"
 izbor5 = "Obnova stolnice"
 izbor6 = "Pesmi"
 izbor7 = "Študentske sobe"
+izbor8 = "Vabila na dogodke"
 
 # Preverimo dan in čas
 dan_v_tednu = datetime.today().weekday()
@@ -23,11 +25,11 @@ ura = datetime.now().hour
 
 # Nastavimo vrstni red menija in ikon
 if dan_v_tednu == 6 and ura < 12:  # Nedelja dopoldan
-    mozni_izbori = [izbor6, izbor2, izbor3, izbor4, izbor5, izbor1, izbor7]  # Pesmi na vrhu
-    ikone = ['music-note-list', 'calendar2-event', 'brightness-high', 'book', 'buildings', 'card-text', 'house-door']
+    mozni_izbori = [izbor6, izbor2, izbor3, izbor4, izbor5, izbor1, izbor7, izbor8]  # Pesmi na vrhu
+    ikone = ['music-note-list', 'bell', 'brightness-high', 'book', 'buildings', 'card-text', 'house-door', 'calendar2-event']
 else:  # Ostali dnevi + nedelja popoldan
-    mozni_izbori = [izbor1, izbor2, izbor3, izbor4, izbor5, izbor6, izbor7]  # Privzeti vrstni red
-    ikone = ['card-text', 'calendar2-event', 'brightness-high', 'book', 'buildings', 'music-note-list', 'house-door']
+    mozni_izbori = [izbor1, izbor2, izbor3, izbor4, izbor5, izbor6, izbor7, izbor8]  # Privzeti vrstni red
+    ikone = ['card-text', 'bell', 'brightness-high', 'book', 'buildings', 'music-note-list', 'house-door', 'calendar2-event']
 
 # Funkcija za branje besedila iz Word dokumenta
 def preberi_docx(datoteka):
